@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: SHEC-PSIMS
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shec_psims
+    username: root
+    password: 123456
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB # 设置最大文件大小，例如 10MB
+      max-request-size: 20MB # 设置最大请求大小，例如 10MB
+      location: uploads/ # 设置上传文件的存储目录
+  mvc:
+    static-path-pattern: /admin/goods/static/**
+  web:
+    resources:
+      static-locations: file:C:/image/
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.webtab.shecpsims.entity
+  configuration:
+    mapUnderscoreToCamelCase: true
+    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl # ?????SQL??
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    root: info
+    com.webtab.shecpsims: debug
