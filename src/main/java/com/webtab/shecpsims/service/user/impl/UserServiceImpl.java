@@ -10,7 +10,6 @@ import com.webtab.shecpsims.model.vo.user.LoginUserVO;
 import com.webtab.shecpsims.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!saveResult) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
         }
-        return user.getUserID();
+        return user.getUserId();
     }
 
 

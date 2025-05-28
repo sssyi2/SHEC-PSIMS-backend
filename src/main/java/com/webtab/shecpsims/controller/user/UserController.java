@@ -85,12 +85,12 @@ public class UserController{
 
         // 2. 获取当前登录用户的 ID
         User loginUser = userService.getLoginUser(request);
-        int userId = loginUser.getUserID();
+        int userId = loginUser.getUserId();
 
         // 3. 创建 User 对象并赋值
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequest, user);
-        user.setUserID(userId);
+        user.setUserId(userId);
 
         // 4. 更新用户信息
         boolean result = userService.updateById(user);
