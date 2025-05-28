@@ -18,7 +18,7 @@
 --
 -- Dumping data for table `alert_condition`
 --
-use shec_psims;
+
 LOCK TABLES `alert_condition` WRITE;
 /*!40000 ALTER TABLE `alert_condition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `alert_condition` ENABLE KEYS */;
@@ -312,4 +312,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-28  9:36:00
+-- Dump completed on 2025-05-28 10:36:16

@@ -54,7 +54,7 @@ public class binviteController {
     inviteUser.setInviteCode(inviteCode);
     inviteUser.setUserName(UserName);
     inviteUser.setPassword(PasswordHash);
-        int userID = inviter.getUserID();
+        int userID = inviter.getUserId();
     inviteUser.setConnectUserId(userID);
         inviteUserService.save(inviteUser);
 //        return R.ok().data(inviteUser);
