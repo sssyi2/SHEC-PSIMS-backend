@@ -183,7 +183,15 @@ CREATE TABLE `elderlyprofile` (
   `weight` float DEFAULT NULL,
   `blood_pressure` varchar(10) DEFAULT NULL,
   `heart_rate` int DEFAULT NULL,
-  PRIMARY KEY (`patient_id`)
+  `admission_date` datetime DEFAULT NULL COMMENT '入院时间',
+  `discharge_date` datetime DEFAULT NULL COMMENT '出院时间',
+  `status` varchar(20) DEFAULT '住院中' COMMENT '状态：住院中/已出院/转院',
+  `create_date` date DEFAULT NULL COMMENT '记录创建日期',
+  `last_update` datetime DEFAULT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`patient_id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_admission_date` (`admission_date`),
+  KEY `idx_create_date` (`create_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -672,4 +680,4 @@ CREATE TABLE `user_role` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-28 10:36:07
+-- Dump completed on 2025-05-30 11:43:57
