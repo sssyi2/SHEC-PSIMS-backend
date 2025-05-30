@@ -13,8 +13,8 @@ public class PasswordController {
     private UserService userService;
     @PostMapping("/{id}")
 
-    public R modifyPassword(@PathVariable("id") int UserID, @RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String confirmPassword) {
-        User user = userService.getUserById(UserID);
+    public R modifyPassword(@PathVariable("id") int UserId, @RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String confirmPassword) {
+        User user = userService.getUserById(UserId);
         if(user==null){
             return R.error(507).msg("用户不存在");
         }

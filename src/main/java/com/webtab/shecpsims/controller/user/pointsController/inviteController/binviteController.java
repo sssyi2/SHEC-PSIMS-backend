@@ -21,7 +21,7 @@ public class binviteController {
     private InviteUserService inviteUserService;
     @PostMapping("/register")
     //生成邀请码邀请好友，好友登录注册时输入邀请码，邀请者获得积分
-    public R inviteRegister(@RequestParam String UserName, @RequestParam String PasswordHash,@RequestParam String confirm,@RequestParam(required = false) String inviteCode) {
+    public R inviteRegister(@RequestParam("username") String UserName, @RequestParam("password") String PasswordHash,@RequestParam String confirm,@RequestParam(required = false) String inviteCode) {
     if(UserName==null||UserName.isEmpty()){
     return R.error(518).msg("用户名不能为空");
     }
@@ -85,9 +85,9 @@ public class binviteController {
                 inviter.setUserpoints(userpoints+700) ;
             }
             UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("UserID",userID)
-                    .set("inviteCode", null)
-                    .set("inviteSum", inviter.getInviteSum())
+            updateWrapper.eq("user_id",userID)
+                    .set("invite_code", null)
+                    .set("invite_sum", inviter.getInviteSum())
                     .set("userpoints", inviter.getUserpoints());
             userService.update(null, updateWrapper);//保存修改后的用户
             return R.ok().msg("邀请好友成功");

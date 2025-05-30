@@ -9,12 +9,12 @@ import java.io.Serializable;
 
 public class Question implements Serializable {
     @TableId
-    private Integer questionId;
+    private int questionId;
     private String question;
     private String answer;
     private int status;
 
-    public Integer getQuestionId() {
+    public int getQuestionId() {
         return questionId;
     }
 

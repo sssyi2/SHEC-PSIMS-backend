@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 //抽奖实体，字段包含积分，奖品，
 public class Raffle {
     @TableId(type= IdType.AUTO)
-    private Integer raffleId;
+    private int raffleId;
     private String raffleName;
     private int spendPoints;
     private int roundId;
@@ -22,7 +22,7 @@ public class Raffle {
         this.raffleName = raffleName;
     }
 
-    public Integer getRaffleId() {
+    public int getRaffleId() {
         return raffleId;
     }
 

@@ -5,7 +5,7 @@ import com.webtab.shecpsims.model.entity.user.User;
 import com.webtab.shecpsims.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-//
+
 //修改个人信息
 @RestController
 @RequestMapping("/user/modify")
@@ -13,11 +13,11 @@ public class PersonalInforController {
     @Autowired
     private UserService userService;
     @PostMapping("/patient/{id}")
-    public R modifyInformation( @PathVariable("id")int UserID,@RequestBody User user) {
-        if(UserID==0){
+    public R modifyInformation( @PathVariable("id")int userId,@RequestBody User user) {
+        if(userId==0){
             return R.error(504).msg("用户ID不能为空");
         }
-       User user2 = userService.getUserById(UserID);
+       User user2 = userService.getUserById(userId);
         if(user2==null){
             return R.error(506).msg("用户不存在");
         }
@@ -96,11 +96,11 @@ public class PersonalInforController {
 
     }
     @PostMapping("/doctor/{id}")
-    public R modifyInformation2( @PathVariable("id")int UserID,@RequestBody User user) {
-        if(UserID==0){
+    public R modifyInformation2( @PathVariable("id")int UserId,@RequestBody User user) {
+        if(UserId==0){
             return R.error(504).msg("用户ID不能为空");
         }
-        User user2 = userService.getUserById(UserID);
+        User user2 = userService.getUserById(UserId);
         if(user2==null){
             return R.error(506).msg("用户不存在");
         }
@@ -216,8 +216,8 @@ public class PersonalInforController {
 
     }
     @GetMapping("/list/{id}")
-    public R informationList(@PathVariable("id") int UserID){
-        User user = userService.getUserById(UserID);
+    public R informationList(@PathVariable("id") int UserId){
+        User user = userService.getUserById(UserId);
         if(user==null){
             return R.error(507).msg("用户不存在");
         }

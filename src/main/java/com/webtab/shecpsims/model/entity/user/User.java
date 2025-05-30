@@ -14,7 +14,7 @@ import java.io.Serializable;
 @ToString
 public class User implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Integer UserId;
+    private int UserId;
     private String UserName;
     @JsonProperty("age")
     private int Age;
@@ -83,8 +83,8 @@ public class User implements Serializable {
         return UserId;
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
+    public void setUserId(int userID) {
+        UserId = userID;
     }
 
     public String getUserName() {

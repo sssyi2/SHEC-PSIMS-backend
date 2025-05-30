@@ -20,6 +20,6 @@ public class InviteUserServiceImpl extends ServiceImpl<InviteUserMapper, InviteU
 
     @Override
     public InviteUser isUsedInviteCode(String inviteCode) {
-        return baseMapper.selectOne(new QueryWrapper<InviteUser>().eq("inviteCode",inviteCode));
+        return baseMapper.selectOne(new QueryWrapper<InviteUser>().eq("invite_code",inviteCode));
     }
 }

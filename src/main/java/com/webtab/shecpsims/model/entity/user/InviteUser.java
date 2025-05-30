@@ -9,7 +9,7 @@ import lombok.ToString;
 @TableName("InviteUser")
 public class InviteUser {
     @TableId(type = IdType.AUTO)
-    private Integer  id;
+    private int  id;
     private String userName;
     private String password;
     private String inviteCode;
@@ -50,7 +50,7 @@ public class InviteUser {
     public void setId(int id) {
         this.id = id;
     }
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 }

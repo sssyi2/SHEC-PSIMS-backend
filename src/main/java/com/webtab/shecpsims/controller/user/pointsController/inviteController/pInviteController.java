@@ -16,9 +16,9 @@ public class pInviteController {
     @Autowired
     private InviteUserService inviteUserService;
     @GetMapping("/getCode/{id}")
-    public R getCode(@PathVariable("id") int UserID){
+    public R getCode(@PathVariable("id") int UserId){
         String inviteCode=inviteUserService.getInviteCode();//生成邀请码
-        User user = userService.getUserById(UserID);
+        User user = userService.getUserById(UserId);
         if(user==null){
             return R.error(506).msg("用户不存在");
         }
