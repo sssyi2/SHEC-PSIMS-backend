@@ -47,15 +47,15 @@ public class enterRaffleController {
          userService.updateById(user);
         pointsService.updateUserPoints2(user.getUserpoints());//积分改变发送消息
         List<Raffle> raffles = raffleService.getRaffleById(roundId);
-        System.out.println("奖品轮盘已找到");
+//        System.out.println("奖品轮盘已找到");
             int prizeId = raffleService.getPrize(raffles);//获得了奖品的id
-        System.out.println("奖品id已经找到");
+//        System.out.println("奖品id已经找到");
             Raffle prize = raffleService.getPrizeById(prizeId);//获得奖品
         System.out.println("奖品已找到");
         boolean flag = raffleService.get(UserID, prize);
         if(flag){
             user = userService.getById(UserID); // 重新获取最新状态
-//            pointsService.updateUserPoints2(user.getUserpoints());
+            pointsService.updateUserPoints2(user.getUserpoints());
             return R.ok().data(prize);
         }
        return R.error(555).msg("抽奖出现错误");

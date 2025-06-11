@@ -93,7 +93,7 @@ CREATE TABLE `audit_log` (
   `details` text,
   PRIMARY KEY (`log_id`),
   KEY `FK_AUDIT_LO_GENERATE_USER` (`user_id`),
-  CONSTRAINT `FK_AUDIT_LO_GENERATE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `FK_ADUIT_LO_GENERATE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -115,7 +115,7 @@ CREATE TABLE `device_usage` (
   KEY `FK_DEVICE_U_OPERATE_USER` (`UserID`),
   KEY `FK_DEVICE_U_SERVE_ELDERLYP` (`patient_id`),
   KEY `FK_DEVICE_U_USE_DEVICES` (`device_id`),
-  CONSTRAINT `FK_DEVICE_U_OPERATE_USER` FOREIGN KEY (`UserID`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_DEVICE_U_OPERATE_USER` FOREIGN KEY (`UserID`) REFERENCES `user` (`user_id`),
   CONSTRAINT `FK_DEVICE_U_SERVE_ELDERLYP` FOREIGN KEY (`patient_id`) REFERENCES `elderlyprofile` (`patient_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_DEVICE_U_USE_DEVICES` FOREIGN KEY (`device_id`) REFERENCES `devices` (`device_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -210,9 +210,8 @@ CREATE TABLE `emergency_contact` (
   `contact_phone` varchar(20) DEFAULT NULL,
   `relation` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`contact_id`),
-  KEY `FK_EMERGENC_BIND_ELDERLYP` (`patient_id`),
-  CONSTRAINT `FK_EMERGENC_BIND_ELDERLYP` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`),
-  CONSTRAINT `fk_emergency_contact_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_emergency_contact_patient_id` (`patient_id`),
+  CONSTRAINT `fk_emergency_contact_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -234,8 +233,8 @@ CREATE TABLE `evaluation` (
   PRIMARY KEY (`evaluation_id`),
   KEY `FK_EVALUATI_EVALUATE_USER` (`user_id`),
   KEY `FK_EVALUATI_RESPONSE_USER` (`use_user_id`),
-  CONSTRAINT `FK_EVALUATI_EVALUATE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK_EVALUATI_RESPONSE_USER` FOREIGN KEY (`use_user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `FK_EVALUATI_EVALUATE_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `FK_EVALUATI_RESPONSE_USER` FOREIGN KEY (`use_user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -254,7 +253,7 @@ CREATE TABLE `feedback` (
   `status` varchar(20) NOT NULL,
   PRIMARY KEY (`feedback_id`),
   KEY `FK_FEEDBACK_SEND_USER` (`user_id`),
-  CONSTRAINT `FK_FEEDBACK_SEND_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `FK_FEEDBACK_SEND_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -298,7 +297,7 @@ CREATE TABLE `followup_record` (
   KEY `FK_FOLLOWUP_FOLLOWUP_USER` (`user_id`),
   KEY `FK_FOLLOWUP_GENERATE2_FOLLOWUP` (`visit_plan_id`),
   CONSTRAINT `FK_FOLLOWUP_FOLLOWED__ELDERLYP` FOREIGN KEY (`patient_id`) REFERENCES `elderlyprofile` (`patient_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK_FOLLOWUP_FOLLOWUP_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_FOLLOWUP_FOLLOWUP_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `FK_FOLLOWUP_GENERATE2_FOLLOWUP` FOREIGN KEY (`visit_plan_id`) REFERENCES `followupplan` (`visit_plan_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -321,7 +320,7 @@ CREATE TABLE `followupplan` (
   KEY `FK_FOLLOWUP_ARRANGE_ELDERLYP` (`patient_id`),
   KEY `FK_FOLLOWUP_RESPONSIB_USER` (`user_id`),
   CONSTRAINT `FK_FOLLOWUP_ARRANGE_ELDERLYP` FOREIGN KEY (`patient_id`) REFERENCES `elderlyprofile` (`patient_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK_FOLLOWUP_RESPONSIB_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `FK_FOLLOWUP_RESPONSIB_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -395,7 +394,7 @@ CREATE TABLE `health_record` (
   `health_record_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `gender` varchar(3) DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
   `age` int DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `id_number` varchar(18) DEFAULT NULL,
@@ -408,11 +407,17 @@ CREATE TABLE `health_record` (
   `weight` float DEFAULT NULL,
   `blood_pressure` varchar(10) DEFAULT NULL,
   `heart_rate` int DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
+  `admission_date` datetime DEFAULT NULL COMMENT '入院时间',
+  `discharge_date` datetime DEFAULT NULL COMMENT '出院时间',
+  `status` varchar(20) DEFAULT '住院中' COMMENT '状态：住院中/已出院/转院',
+  `create_date` datetime DEFAULT NULL COMMENT '记录创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '记录更新时间',
   PRIMARY KEY (`health_record_id`),
   KEY `fk_health_record_patient_id` (`patient_id`),
-  CONSTRAINT `fk_health_record_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `idx_status` (`status`),
+  KEY `idx_admission_date` (`admission_date`),
+  KEY `idx_create_date` (`create_date`),
+  CONSTRAINT `fk_health_record_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -430,7 +435,7 @@ CREATE TABLE `inviteuser` (
   `invite_code` char(6) DEFAULT NULL,
   `connect_user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -452,30 +457,7 @@ CREATE TABLE `medical_record` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`record_id`),
   KEY `fk_medical_record_patient_id` (`patient_id`),
-  CONSTRAINT `fk_medical_record_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `medicalrecord`
---
-
-DROP TABLE IF EXISTS `medicalrecord`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `medicalrecord` (
-  `record_id` int NOT NULL,
-  `patient_id` int NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `gender` varchar(3) DEFAULT NULL,
-  `age` int DEFAULT NULL,
-  `diagnosis` text,
-  `treatment_plan` text,
-  `create_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`record_id`),
-  KEY `FK_MEDICALR_INCLUDE_ELDERLYP` (`patient_id`),
-  CONSTRAINT `FK_MEDICALR_INCLUDE_ELDERLYP` FOREIGN KEY (`patient_id`) REFERENCES `elderlyprofile` (`patient_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `fk_medical_record_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -557,8 +539,8 @@ CREATE TABLE `prescription` (
   PRIMARY KEY (`prescription_id`),
   KEY `fk_prescription_patient_id` (`patient_id`),
   KEY `fk_prescription_record_id` (`record_id`),
-  CONSTRAINT `fk_prescription_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_prescription_record_id` FOREIGN KEY (`record_id`) REFERENCES `medical_record` (`record_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_prescription_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_prescription_record_id` FOREIGN KEY (`record_id`) REFERENCES `medical_record` (`record_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -634,7 +616,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `user_id` int NOT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
   `user_name` varchar(50) NOT NULL,
   `age` int DEFAULT NULL,
   `gender` char(1) DEFAULT NULL,
@@ -651,7 +633,7 @@ CREATE TABLE `user` (
   `invite_sum` int DEFAULT NULL,
   `city` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -667,7 +649,7 @@ CREATE TABLE `user_role` (
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `FK_USER_ROL_ASSIGN2_ROLE` (`role_id`),
   CONSTRAINT `FK_USER_ROL_ASSIGN2_ROLE` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK_USER_ROL_ASSIGN_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `FK_USER_ROL_ASSIGN_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

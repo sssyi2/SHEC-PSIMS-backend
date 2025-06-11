@@ -8,10 +8,11 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("elderlyprofile")
-public class ElderlyProfile {
+@TableName("health_record")
+public class HealthRecord {
 
-    @TableId(value = "patient_id", type = IdType.AUTO)
+    @TableId(value = "health_record_id", type = IdType.AUTO)
+    private Integer healthRecordId;
     private Integer patientId;
 
     private String name;
@@ -19,7 +20,7 @@ public class ElderlyProfile {
     private Integer age;
     private Date birthDate;
     private String idNumber;
-    private String contactInfo;
+    private String contactNumber;
     private String address;
     private String familyMedicalHistory;
     private String allergyHistory;

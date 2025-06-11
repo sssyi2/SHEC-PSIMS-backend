@@ -2,7 +2,7 @@ package com.webtab.shecpsims.service.bigdata.impl;
 
 
 import com.webtab.shecpsims.mapper.bigdata.AlertRecordMapper;
-import com.webtab.shecpsims.mapper.bigdata.ElderlyProfileMapper;
+import com.webtab.shecpsims.mapper.bigdata.HealthRecordMapper;
 import com.webtab.shecpsims.mapper.bigdata.FollowupRecordMapper;
 import com.webtab.shecpsims.model.dto.bigdata.StatCardDTO;
 import com.webtab.shecpsims.model.dto.bigdata.TrendDTO;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class DashboardServiceImpl implements DashboardService {
 
     @Autowired
-    private ElderlyProfileMapper elderlyProfileMapper;
+    private HealthRecordMapper healthRecordMapper;
     @Autowired
     private AlertRecordMapper alertRecordMapper;
     @Autowired
@@ -36,7 +36,7 @@ public class DashboardServiceImpl implements DashboardService {
         patientCard.setTitle("在院患者");
 
         // 获取当前在院患者数
-        int currentPatientCount = elderlyProfileMapper.countCurrentPatients();
+        int currentPatientCount = healthRecordMapper.countCurrentPatients();
         patientCard.setValue(String.valueOf(currentPatientCount));
 
         // 计算患者数量趋势
@@ -80,8 +80,8 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public Map<String, Object> calculatePatientTrend() {
         // 获取今日和昨日的患者数量
-        int todayCount = elderlyProfileMapper.countCurrentPatients();
-        int yesterdayCount = elderlyProfileMapper.countYesterdayPatients();
+        int todayCount = healthRecordMapper.countCurrentPatients();
+        int yesterdayCount = healthRecordMapper.countYesterdayPatients();
 
         Map<String, Object> trend = new HashMap<>();
 
