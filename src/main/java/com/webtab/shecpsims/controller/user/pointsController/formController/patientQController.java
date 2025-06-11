@@ -31,7 +31,7 @@ public class patientQController {
         if(question==null){
             return R.error(514).msg("问题不存在");
         }
-        question.setAnswer(answer);
+        //question.setAnswer(answer);
         question.setStatus(1);
         questionService.updateById(question);
         return R.ok().data(question);

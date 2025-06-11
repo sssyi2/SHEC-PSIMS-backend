@@ -19,4 +19,6 @@ public interface RaffleService extends IService<Raffle> {
     int getPrize(List<Raffle> raffles);
 
     Raffle getPrizeById(int prizeId);
+
+    boolean get(int UserID,Raffle prize);
 }

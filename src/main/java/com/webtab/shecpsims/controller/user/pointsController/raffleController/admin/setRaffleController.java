@@ -60,9 +60,10 @@ public class setRaffleController {
         return b?R.ok().msg("删除成功"):R.error(530).msg("删除轮盘失败");
     }
     //显示所有抽奖轮盘
-    @GetMapping("/list")
-    public R listRaffle(){
-        raffleService.list();
-        return R.ok().data(raffleService.list());
+    @GetMapping("/list/{id}")
+    public R listRaffle(@PathVariable("id") int roundId) {
+        List<Raffle> raffle = raffleService.getRaffleById(roundId);
+
+        return R.ok().data(raffle);
     }
 }

@@ -5,6 +5,7 @@ import com.webtab.shecpsims.model.entity.user.InviteUser;
 import com.webtab.shecpsims.model.entity.user.R;
 import com.webtab.shecpsims.model.entity.user.User;
 import com.webtab.shecpsims.service.user.InviteUserService;
+import com.webtab.shecpsims.service.user.PointsService;
 import com.webtab.shecpsims.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,9 @@ public class binviteController {
     private UserService userService;
     @Autowired
     private InviteUserService inviteUserService;
+    @Autowired
+    private PointsService pointsService;
+
     @PostMapping("/register")
     //生成邀请码邀请好友，好友登录注册时输入邀请码，邀请者获得积分
     public R inviteRegister(@RequestParam("username") String UserName, @RequestParam("password") String PasswordHash,@RequestParam String confirm,@RequestParam(required = false) String inviteCode) {
@@ -90,7 +94,10 @@ public class binviteController {
                     .set("invite_sum", inviter.getInviteSum())
                     .set("userpoints", inviter.getUserpoints());
             userService.update(null, updateWrapper);//保存修改后的用户
+            pointsService.updateUserPoints(inviter.getUserName(), inviter.getUserpoints(),inviter.getInviteSum());
+            System.out.println(inviter.getUserName() + inviter.getUserpoints());
             return R.ok().msg("邀请好友成功");
+
         }
         //未使用积分不变
         return R.ok().msg("邀请码还未使用");

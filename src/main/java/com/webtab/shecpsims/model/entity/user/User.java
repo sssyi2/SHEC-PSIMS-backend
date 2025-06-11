@@ -27,7 +27,7 @@ public class User implements Serializable {
     @JsonProperty("phoneNumber")
     private String PhoneNumber;
 
-    private String real_name;
+    private String realName;
     @JsonProperty("address")
     private String Address;
     @JsonProperty("country")
@@ -136,11 +136,11 @@ public class User implements Serializable {
     }
 
     public String getReal_name() {
-        return real_name;
+        return realName;
     }
 
     public void setReal_name(String real_name) {
-        this.real_name = real_name;
+        this.realName= real_name;
     }
 
     public String getCountry() {

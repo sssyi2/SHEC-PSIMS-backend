@@ -17,14 +17,8 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * @author taojianbing
- * @version V1.0
- * Copyright (c) 2025, taojianbing@hwadee.com All Rights Reserved.
- * @ProjectName:Web04
- * @Title: GoodsAddController
- * @Package com.hwadee.controller.goods.admin
  * @Description: 添加商品接口
- * @date 2025/3/14 12:32
+ * @date 2025/5/14 12:32
  */
 @RestController
 @RequestMapping("/admin/goods")

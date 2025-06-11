@@ -4,17 +4,25 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.webtab.shecpsims.model.entity.user.Raffle;
 import com.webtab.shecpsims.mapper.user.RaffleMapper;
+import com.webtab.shecpsims.model.entity.user.User;
+import com.webtab.shecpsims.service.user.PointsService;
 import com.webtab.shecpsims.service.user.RaffleService;
+import com.webtab.shecpsims.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class RaffleServiceImpl extends ServiceImpl<RaffleMapper, Raffle>
         implements RaffleService {
     @Autowired
     private RaffleMapper raffleMapper;
+    @Autowired
+    private UserService userService;
 
     @Override
     public boolean addRaffle(Raffle raffle) {
@@ -49,7 +57,7 @@ public class RaffleServiceImpl extends ServiceImpl<RaffleMapper, Raffle>
     @Override
     public int getSpendPointsById(int roundId) {
         QueryWrapper<Raffle> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("roundId", roundId);
+        queryWrapper.eq("round_id", roundId);
         List<Raffle> raffles = raffleMapper.selectList(queryWrapper);
         for(Raffle raffle1 : raffles){
             if(raffle1==null){
@@ -63,7 +71,7 @@ public class RaffleServiceImpl extends ServiceImpl<RaffleMapper, Raffle>
 
     @Override
     public List<Raffle> getRaffleById(int roundId) {
-        List<Raffle> raffles = baseMapper.selectList(new QueryWrapper<Raffle>().eq("roundId", roundId));
+        List<Raffle> raffles = baseMapper.selectList(new QueryWrapper<Raffle>().eq("round_id", roundId));
         return raffles;
     }
 //返回抽中的奖品id
@@ -110,6 +118,37 @@ public class RaffleServiceImpl extends ServiceImpl<RaffleMapper, Raffle>
         Raffle raffle = baseMapper.selectById(prizeId);
         return raffle;
     }
+
+    @Override//得到奖品后的操作
+    public boolean get(int UserID,Raffle prize) {
+        User user = userService.getUserById(UserID);
+        if(prize.getRaffleName().endsWith("积分")){
+            // 正则匹配 "XX积分" 中的数字部分
+            Pattern pattern = Pattern.compile("^(\\d+)积分$");
+            Matcher matcher = pattern.matcher(prize.getRaffleName());
+
+            if (matcher.find()) {
+                int points = Integer.parseInt(matcher.group(1)); // 提取数字
+                user.setUserpoints(user.getUserpoints() + points);
+                userService.updateById(user);
+                System.out.println("用户积分为："+user.getUserpoints());
+
+                return true;
+
+
+            }else{
+                System.out.println("出错了");
+                return false;
+            }
+        }else{
+//            System.out.println(prize.getRaffleName());
+            return true;
+        }
+    }
+
+
+
+
 
 
 }
