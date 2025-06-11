@@ -5,6 +5,7 @@ import com.webtab.shecpsims.model.dto.bigdata.StatCardDTO;
 import com.webtab.shecpsims.model.dto.bigdata.StatsCardsResponseDTO;
 import com.webtab.shecpsims.service.bigdata.DashboardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DashboardController {
 
-    private final DashboardService dashboardService;
+    @Autowired
+    private DashboardService dashboardService;
 
     @GetMapping("/stats")
     public StatsCardsResponseDTO getStatCards() {

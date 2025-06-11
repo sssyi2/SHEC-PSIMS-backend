@@ -8,6 +8,7 @@ import com.webtab.shecpsims.model.dto.bigdata.StatCardDTO;
 import com.webtab.shecpsims.model.dto.bigdata.TrendDTO;
 import com.webtab.shecpsims.service.bigdata.DashboardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,9 +20,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DashboardServiceImpl implements DashboardService {
 
-    private final ElderlyProfileMapper elderlyProfileMapper;
-    private final AlertRecordMapper alertRecordMapper;
-    private final FollowupRecordMapper followupRecordMapper;
+    @Autowired
+    private ElderlyProfileMapper elderlyProfileMapper;
+    @Autowired
+    private AlertRecordMapper alertRecordMapper;
+    @Autowired
+    private FollowupRecordMapper followupRecordMapper;
 
     @Override
     public List<StatCardDTO> getStatCards() {
