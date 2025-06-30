@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.37, for Win64 (x86_64)
 --
 -- Host: localhost    Database: shec_psims
 -- ------------------------------------------------------
--- Server version	8.0.41
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,7 +18,7 @@
 --
 -- Table structure for table `alert_condition`
 --
-use shec_psims;
+
 DROP TABLE IF EXISTS `alert_condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -98,6 +98,46 @@ CREATE TABLE `audit_log` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `cost_breakdown`
+--
+
+DROP TABLE IF EXISTS `cost_breakdown`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cost_breakdown` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `financial_data_id` int NOT NULL COMMENT '关联的财务数据ID',
+  `cost_category` varchar(50) NOT NULL COMMENT '成本类别',
+  `cost_amount` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '成本金额',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_cost_breakdown_financial_data` (`financial_data_id`),
+  CONSTRAINT `fk_cost_breakdown_financial_data` FOREIGN KEY (`financial_data_id`) REFERENCES `financial_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='成本明细表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `cost_categories`
+--
+
+DROP TABLE IF EXISTS `cost_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cost_categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(50) NOT NULL COMMENT '类别名称',
+  `display_order` int NOT NULL DEFAULT '0' COMMENT '显示顺序',
+  `color_code` varchar(20) DEFAULT NULL COMMENT '图表显示颜色代码',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_category_name` (`category_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='成本类别配置表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `device_usage`
 --
 
@@ -157,7 +197,7 @@ CREATE TABLE `emergency_contact` (
   PRIMARY KEY (`contact_id`),
   KEY `fk_emergency_contact_patient_id` (`patient_id`),
   CONSTRAINT `fk_emergency_contact_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,6 +240,29 @@ CREATE TABLE `feedback` (
   KEY `FK_FEEDBACK_SEND_USER` (`user_id`),
   CONSTRAINT `FK_FEEDBACK_SEND_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `financial_data`
+--
+
+DROP TABLE IF EXISTS `financial_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `financial_data` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `period_type` varchar(20) NOT NULL COMMENT '周期类型: daily, weekly, monthly, quarterly, yearly',
+  `period_start` date NOT NULL COMMENT '周期开始日期',
+  `period_end` date NOT NULL COMMENT '周期结束日期',
+  `total_revenue` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '总收入',
+  `total_cost` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '总成本',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_period_type_dates` (`period_type`,`period_start`,`period_end`),
+  KEY `idx_period_start` (`period_start`),
+  KEY `idx_period_end` (`period_end`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='财务数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -363,7 +426,7 @@ CREATE TABLE `health_record` (
   KEY `idx_admission_date` (`admission_date`),
   KEY `idx_create_date` (`create_date`),
   CONSTRAINT `fk_health_record_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -403,7 +466,7 @@ CREATE TABLE `medical_record` (
   PRIMARY KEY (`record_id`),
   KEY `fk_medical_record_patient_id` (`patient_id`),
   CONSTRAINT `fk_medical_record_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,6 +513,28 @@ CREATE TABLE `medicines` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `monthly_financial_trends`
+--
+
+DROP TABLE IF EXISTS `monthly_financial_trends`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `monthly_financial_trends` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `year` int NOT NULL COMMENT '年份',
+  `month` int NOT NULL COMMENT '月份 (1-12)',
+  `revenue` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '月度收入',
+  `cost` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '月度成本',
+  `profit` decimal(15,2) GENERATED ALWAYS AS ((`revenue` - `cost`)) STORED COMMENT '月度利润',
+  `roi` decimal(8,2) GENERATED ALWAYS AS ((case when (`cost` > 0) then (((`revenue` - `cost`) / `cost`) * 100) else NULL end)) STORED COMMENT 'ROI (%)',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_year_month` (`year`,`month`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='月度财务趋势表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `patient_management`
 --
 
@@ -467,7 +552,7 @@ CREATE TABLE `patient_management` (
   KEY `fk_patient_management_patient_id` (`patient_id`),
   CONSTRAINT `fk_patient_management_doctor_id` FOREIGN KEY (`doctor_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_patient_management_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,7 +592,29 @@ CREATE TABLE `prescription` (
   KEY `fk_prescription_record_id` (`record_id`),
   CONSTRAINT `fk_prescription_patient_id` FOREIGN KEY (`patient_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_prescription_record_id` FOREIGN KEY (`record_id`) REFERENCES `medical_record` (`record_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `quarterly_financial_data`
+--
+
+DROP TABLE IF EXISTS `quarterly_financial_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quarterly_financial_data` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `year` int NOT NULL COMMENT '年份',
+  `quarter` int NOT NULL COMMENT '季度 (1-4)',
+  `revenue` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '季度收入',
+  `cost` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '季度成本',
+  `profit` decimal(15,2) GENERATED ALWAYS AS ((`revenue` - `cost`)) STORED COMMENT '季度利润',
+  `roi` decimal(8,2) GENERATED ALWAYS AS ((case when (`cost` > 0) then (((`revenue` - `cost`) / `cost`) * 100) else NULL end)) STORED COMMENT 'ROI (%)',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_year_quarter` (`year`,`quarter`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='季度财务数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -523,7 +630,7 @@ CREATE TABLE `question` (
   `question` varchar(255) DEFAULT NULL,
   `status` int DEFAULT NULL,
   PRIMARY KEY (`question_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -541,6 +648,26 @@ CREATE TABLE `raffle` (
   `winning_prob` double DEFAULT NULL,
   PRIMARY KEY (`raffle_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `revenue_breakdown`
+--
+
+DROP TABLE IF EXISTS `revenue_breakdown`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `revenue_breakdown` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `financial_data_id` int NOT NULL COMMENT '关联的财务数据ID',
+  `revenue_category` varchar(50) NOT NULL COMMENT '收入类别',
+  `revenue_amount` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '收入金额',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_revenue_breakdown_financial_data` (`financial_data_id`),
+  CONSTRAINT `fk_revenue_breakdown_financial_data` FOREIGN KEY (`financial_data_id`) REFERENCES `financial_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='收入明细表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -618,6 +745,27 @@ CREATE TABLE `user_role` (
   CONSTRAINT `FK_USER_ROL_ASSIGN_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `yearly_financial_data`
+--
+
+DROP TABLE IF EXISTS `yearly_financial_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `yearly_financial_data` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `year` int NOT NULL COMMENT '年份',
+  `revenue` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '年度收入',
+  `cost` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '年度成本',
+  `profit` decimal(15,2) GENERATED ALWAYS AS ((`revenue` - `cost`)) STORED COMMENT '年度利润',
+  `roi` decimal(8,2) GENERATED ALWAYS AS ((case when (`cost` > 0) then (((`revenue` - `cost`) / `cost`) * 100) else NULL end)) STORED COMMENT 'ROI (%)',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_year` (`year`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='年度财务数据表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -628,4 +776,4 @@ CREATE TABLE `user_role` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-11 11:03:37
+-- Dump completed on 2025-06-30 15:37:01

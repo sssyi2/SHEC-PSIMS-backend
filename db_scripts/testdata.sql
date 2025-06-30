@@ -56,6 +56,26 @@ INSERT INTO `audit_log` VALUES (1,1,'用户登录','2025-06-01 08:30:00','192.16
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `cost_breakdown`
+--
+
+LOCK TABLES `cost_breakdown` WRITE;
+/*!40000 ALTER TABLE `cost_breakdown` DISABLE KEYS */;
+INSERT INTO `cost_breakdown` VALUES (1,1,'人力成本',480000.00,NULL,'2025-06-27 06:09:45'),(2,1,'设备投入',180000.00,NULL,'2025-06-27 06:09:45'),(3,1,'药品耗材',110000.00,NULL,'2025-06-27 06:09:45'),(4,1,'其他',80000.00,NULL,'2025-06-27 06:09:45'),(5,2,'人力成本',1320000.00,NULL,'2025-06-27 06:09:45'),(6,2,'设备投入',510000.00,NULL,'2025-06-27 06:09:45'),(7,2,'药品耗材',380000.00,NULL,'2025-06-27 06:09:45'),(8,2,'其他',250000.00,NULL,'2025-06-27 06:09:45'),(9,3,'人力成本',5500000.00,NULL,'2025-06-27 06:09:46'),(10,3,'设备投入',2100000.00,NULL,'2025-06-27 06:09:46'),(11,3,'药品耗材',1400000.00,NULL,'2025-06-27 06:09:46'),(12,3,'其他',800000.00,NULL,'2025-06-27 06:09:46');
+/*!40000 ALTER TABLE `cost_breakdown` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `cost_categories`
+--
+
+LOCK TABLES `cost_categories` WRITE;
+/*!40000 ALTER TABLE `cost_categories` DISABLE KEYS */;
+INSERT INTO `cost_categories` VALUES (1,'人力成本',1,'#5470c6',1,'2025-06-27 06:09:18','2025-06-27 06:09:18'),(2,'设备投入',2,'#91cc75',1,'2025-06-27 06:09:18','2025-06-27 06:09:18'),(3,'药品耗材',3,'#fac858',1,'2025-06-27 06:09:18','2025-06-27 06:09:18'),(4,'其他',4,'#ee6666',1,'2025-06-27 06:09:18','2025-06-27 06:09:18');
+/*!40000 ALTER TABLE `cost_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `device_usage`
 --
 
@@ -103,6 +123,16 @@ LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
 INSERT INTO `feedback` VALUES (1,7,'系统操作简单直观，但健康数据查看页面加载有点慢。','2025-06-01 10:30:00','已处理'),(2,8,'希望能增加更多的健康饮食建议功能。','2025-06-02 15:45:00','待处理'),(3,9,'随访提醒功能很实用，但提醒时间设置不够灵活。','2025-06-03 09:20:00','处理中'),(4,10,'健康计划的界面很友好，操作也方便。','2025-06-04 14:10:00','已处理'),(5,11,'希望能增加与医生即时沟通的功能。','2025-06-05 11:25:00','待处理');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `financial_data`
+--
+
+LOCK TABLES `financial_data` WRITE;
+/*!40000 ALTER TABLE `financial_data` DISABLE KEYS */;
+INSERT INTO `financial_data` VALUES (1,'month','2025-07-01','2025-07-31',1250000.00,850000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(2,'quarter','2025-04-01','2025-06-30',3450000.00,2460000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(3,'year','2025-01-01','2025-12-31',14200000.00,9800000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45');
+/*!40000 ALTER TABLE `financial_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,6 +244,16 @@ INSERT INTO `medicines` VALUES ('1001','XBDP001','硝苯地平缓释片','心血
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `monthly_financial_trends`
+--
+
+LOCK TABLES `monthly_financial_trends` WRITE;
+/*!40000 ALTER TABLE `monthly_financial_trends` DISABLE KEYS */;
+INSERT INTO `monthly_financial_trends` (`id`, `year`, `month`, `revenue`, `cost`, `created_at`, `updated_at`) VALUES (1,2025,1,980000.00,750000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(2,2025,2,1050000.00,790000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(3,2025,3,1120000.00,810000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(4,2025,4,1080000.00,820000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(5,2025,5,1150000.00,830000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(6,2025,6,1200000.00,840000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45'),(7,2025,7,1250000.00,850000.00,'2025-06-27 06:09:45','2025-06-27 06:09:45');
+/*!40000 ALTER TABLE `monthly_financial_trends` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `patient_management`
 --
 
@@ -244,6 +284,15 @@ INSERT INTO `prescription` VALUES (1,7,1,'陈老伯','硝苯地平缓释片，�
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `quarterly_financial_data`
+--
+
+LOCK TABLES `quarterly_financial_data` WRITE;
+/*!40000 ALTER TABLE `quarterly_financial_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quarterly_financial_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `question`
 --
 
@@ -261,6 +310,15 @@ LOCK TABLES `raffle` WRITE;
 /*!40000 ALTER TABLE `raffle` DISABLE KEYS */;
 INSERT INTO `raffle` VALUES (1,'健康小礼品',50,1,0.5),(2,'康复辅助用品',100,2,0.3),(3,'健康检测套装',150,3,0.2),(4,'特色保健服务',200,4,0.1),(5,'高级康复设备体验',250,5,0.05);
 /*!40000 ALTER TABLE `raffle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `revenue_breakdown`
+--
+
+LOCK TABLES `revenue_breakdown` WRITE;
+/*!40000 ALTER TABLE `revenue_breakdown` DISABLE KEYS */;
+/*!40000 ALTER TABLE `revenue_breakdown` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -302,6 +360,15 @@ LOCK TABLES `user_role` WRITE;
 INSERT INTO `user_role` VALUES (1,1),(2,2),(3,2),(4,2),(5,3),(6,3),(7,4),(8,4),(9,4),(10,4),(11,4);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `yearly_financial_data`
+--
+
+LOCK TABLES `yearly_financial_data` WRITE;
+/*!40000 ALTER TABLE `yearly_financial_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `yearly_financial_data` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -312,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-11 11:27:02
+-- Dump completed on 2025-06-30 15:37:18
