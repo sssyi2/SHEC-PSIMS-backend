@@ -12,4 +12,5 @@ import java.util.List;
 public class StatisticsDTO {
     private List<VisitStatsDTO> dailyVisits;
     private List<DepartmentStatsDTO> departmentStats;
+    private DashboardStatsDTO stats;
 }
