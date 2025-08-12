@@ -1,8 +1,8 @@
 package com.webtab.shecpsims.service.bigdata;
 
-import com.webtab.shecpsims.model.dto.bigdata.EquipmentDistributionDTO;
-import com.webtab.shecpsims.model.dto.bigdata.EquipmentSearchResultDTO;
-import com.webtab.shecpsims.model.dto.bigdata.EquipmentUsageDTO;
+import com.webtab.shecpsims.model.dto.bigdata.*;
+
+import java.util.List;
 
 /**
  * 设备服务接口
@@ -27,4 +27,29 @@ public interface EquipmentService {
      * @return 设备搜索结果数据
      */
     EquipmentSearchResultDTO searchEquipment(String keyword);
+
+    /**
+     * 获取设备调度建议
+     * @return 设备调度建议数据
+     */
+    EquipmentScheduleAdviceDTO getEquipmentScheduleAdvice();
+
+    /**
+     * 更新设备状态
+     * @param equipmentId 设备ID
+     * @param updateRequest 更新请求
+     */
+    void updateEquipmentStatus(String equipmentId, UpdateEquipmentStatusDTO updateRequest);
+
+    /**
+     * 批量调度设备
+     * @param batchRequest 批量调度请求
+     */
+    void batchScheduleEquipment(BatchScheduleRequestDTO batchRequest);
+
+    /**
+     * 获取所有设备列表
+     * @return 设备列表
+     */
+    List<Object> getAllEquipment();
 }
