@@ -26,6 +26,14 @@ spring:
     resources:
       static-locations: file:C:/image/
 
+# Flask AI服务配置
+flask:
+  api:
+    url: http://localhost:5000
+    timeout:
+      connect: 30000
+      read: 60000
+
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   type-aliases-package: com.webtab.shecpsims.entity

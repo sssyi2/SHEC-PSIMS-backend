@@ -87,6 +87,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version> <!-- 可以使用最新稳定版本 -->
 		</dependency>
+		<!-- Apache HttpClient 5 for advanced HTTP features -->
+		<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
