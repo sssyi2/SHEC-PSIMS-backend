@@ -2,6 +2,7 @@ package com.webtab.shecpsims.model.entity.elderlyhealth;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -18,10 +19,32 @@ public class Prescription implements Serializable {
     private String name;
     private String medicationInfo;
     private String note;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date endDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm:ss")
     private Date createTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm:ss")
     private Date updateTime;
+    // 新增字段：是否已发送
+    private Boolean sent;
+    // 新增字段：发送时间
+    private Date sendTime;
+
+
+    public Boolean getSent() {
+        return sent;
+    }
+    public void setSent(Boolean sent) {
+        this.sent = sent;
+    }
+    public Date getSendTime() {
+        return sendTime;
+    }
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
+    }
 
     public Integer getPrescriptionId() {
         return prescriptionId;

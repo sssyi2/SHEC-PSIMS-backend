@@ -2,6 +2,7 @@ package com.webtab.shecpsims.mapper.elderlyhealth;
 
 import com.webtab.shecpsims.model.entity.elderlyhealth.EmergencyContact;
 import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 
 @Mapper
@@ -10,16 +11,14 @@ public interface EmergencyContactMapper {
             "VALUES (#{patientId}, #{name}, #{contactName}, #{contactPhone}, #{relation})")
     int insert(EmergencyContact emergencyContact);
 
-    @Update("UPDATE emergency_contact SET name = #{name}, contact_name = #{contactName}, " +
-            "contact_phone = #{contactPhone}, relation = #{relation} WHERE patient_id = #{patientId}")
-    int updateByPatientId(EmergencyContact emergencyContact);
+    @Update("UPDATE emergency_contact SET contact_name = #{contactName}, " +
+            "contact_phone = #{contactPhone}, relation = #{relation} WHERE contact_id = #{contactId}")
+    int updateByContactId(EmergencyContact emergencyContact);
 
-    @Delete("DELETE FROM emergency_contact WHERE patient_id = #{patientId}")
-    int deleteByPatientId(Integer patientId);
+    @Delete("DELETE FROM emergency_contact WHERE contact_id = #{contactId}")
+    int deleteByContactId(Integer contactId);
 
     @Select("SELECT * FROM emergency_contact WHERE patient_id = #{patientId}")
-    EmergencyContact selectByPatientId(Integer patientId);
+    List<EmergencyContact> selectByPatientId(Integer patientId);
 
-    @Select("SELECT * FROM emergency_contact LIMIT #{page}, #{limit}")
-    List<EmergencyContact> selectAll(@Param("page") int offset, @Param("limit") int limit);
 }

@@ -2,6 +2,7 @@ package com.webtab.shecpsims.model.entity.elderlyhealth;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -20,7 +21,9 @@ public class MedicalRecord implements Serializable {
     private Integer age;
     private String diagnosis;
     private String treatmentPlan;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm:ss")
     private Date createTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm:ss")
     private Date updateTime;
 
     public Integer getRecordId() {

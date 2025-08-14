@@ -2,6 +2,7 @@ package com.webtab.shecpsims.mapper.elderlyhealth;
 
 import com.webtab.shecpsims.model.entity.elderlyhealth.Prescription;
 import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 
 @Mapper
@@ -19,9 +20,22 @@ public interface PrescriptionMapper {
     @Delete("DELETE FROM prescription WHERE prescription_id = #{prescriptionId} AND patient_id = #{patientId}")
     int deleteByIdAndPatientId(@Param("prescriptionId") Integer prescriptionId, @Param("patientId") Integer patientId);
 
+    @Delete("DELETE FROM prescription WHERE patient_id = #{patientId}")
+    int deletePatientAllPrescription(@Param("patientId") Integer patientId);
+
     @Select("SELECT * FROM prescription WHERE patient_id = #{patientId}")
     List<Prescription> selectByPatientId(Integer patientId);
 
-    @Select("SELECT * FROM prescription LIMIT #{page}, #{limit}")
-    List<Prescription> selectAll(@Param("page") int offset, @Param("limit") int limit);
+    @Select("SELECT p.*, " +
+            "       CASE WHEN m.message_id IS NOT NULL THEN 1 ELSE 0 END AS sent, " +
+            "       m.send_time " +
+            "FROM prescription p " +
+            "LEFT JOIN medical_messages m ON p.prescription_id = m.prescription_id " +
+            "WHERE p.prescription_id = #{prescriptionId} AND p.patient_id = #{patientId}")
+    Prescription findByIdWithMessageStatus(@Param("prescriptionId") Integer prescriptionId,
+                                             @Param("patientId") Integer patientId);
+
+    @Select("SELECT * FROM prescription WHERE prescription_id = #{prescriptionId} AND patient_id = #{patientId}")
+    Prescription findByIdAndPatientId(@Param("prescriptionId") Integer prescriptionId,
+                                      @Param("patientId") Integer patientId);
 }

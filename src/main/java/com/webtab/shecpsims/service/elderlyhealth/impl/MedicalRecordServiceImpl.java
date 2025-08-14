@@ -1,11 +1,12 @@
-package com.webtab.shecpsims.service.user.impl;
+package com.webtab.shecpsims.service.elderlyhealth.impl;
 
+import com.webtab.shecpsims.mapper.elderlyhealth.MedicalRecordMapper;
 import com.webtab.shecpsims.model.entity.elderlyhealth.MedicalRecord;
 import com.webtab.shecpsims.model.entity.elderlyhealth.R;
-import com.webtab.shecpsims.mapper.elderlyhealth.MedicalRecordMapper;
-import com.webtab.shecpsims.service.MedicalRecordService;
+import com.webtab.shecpsims.service.elderlyhealth.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -36,12 +37,14 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
+    public R delete(Integer patientId) {
+        int deleteResult = medicalRecordMapper.deletePatientAllMRecords(patientId);
+        return deleteResult > 0 ? R.ok().msg("删除成功") : R.error(500).msg("删除失败");
+    }
+
+    @Override
     public List<MedicalRecord> findByPatientId(Integer patientId) {
         return medicalRecordMapper.selectByPatientId(patientId);
     }
 
-    @Override
-    public List<MedicalRecord> findAll(int page, int limit) {
-        return medicalRecordMapper.selectAll(page, limit);
-    }
 }

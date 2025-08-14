@@ -1,11 +1,12 @@
-package com.webtab.shecpsims.service.user.impl;
+package com.webtab.shecpsims.service.elderlyhealth.impl;
 
+import com.webtab.shecpsims.mapper.elderlyhealth.PrescriptionMapper;
 import com.webtab.shecpsims.model.entity.elderlyhealth.Prescription;
 import com.webtab.shecpsims.model.entity.elderlyhealth.R;
-import com.webtab.shecpsims.mapper.elderlyhealth.PrescriptionMapper;
-import com.webtab.shecpsims.service.PrescriptionService;
+import com.webtab.shecpsims.service.elderlyhealth.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -33,12 +34,23 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
+    public R delete(Integer patientId) {
+        int deleteResult = prescriptionMapper.deletePatientAllPrescription(patientId);
+        return deleteResult > 0 ? R.ok().msg("删除成功") : R.error(500).msg("删除失败");
+    }
+
+    @Override
     public List<Prescription> findByPatientId(Integer patientId) {
         return prescriptionMapper.selectByPatientId(patientId);
     }
 
     @Override
-    public List<Prescription> findAll(int page, int limit) {
-        return prescriptionMapper.selectAll(page, limit);
+    public Prescription findByIdWithMessageStatus(Integer prescriptionId, Integer patientId) {
+        return prescriptionMapper.findByIdWithMessageStatus(prescriptionId, patientId);
+    }
+
+    @Override
+    public Prescription findByIdAndPatientId(Integer prescriptionId, Integer patientId) {
+        return prescriptionMapper.findByIdAndPatientId(prescriptionId, patientId);
     }
 }

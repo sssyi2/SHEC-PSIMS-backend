@@ -2,7 +2,7 @@ package com.webtab.shecpsims.controller.elderlyhealth;
 
 import com.webtab.shecpsims.model.entity.elderlyhealth.MedicalRecord;
 import com.webtab.shecpsims.model.entity.elderlyhealth.R;
-import com.webtab.shecpsims.service.MedicalRecordService;
+import com.webtab.shecpsims.service.elderlyhealth.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +37,17 @@ public class MedicalRecordController {
         return R.ok().msg("更新成功");
     }
 
+    //删除特定的电子病历
     @DeleteMapping("/{patientId}/{recordId}")
     public R deleteMedicalRecord(@PathVariable Integer patientId, @PathVariable Integer recordId) {
         medicalRecordService.delete(recordId, patientId);
+        return R.ok().msg("删除成功");
+    }
+
+    //删除该病人所有的电子病历
+    @DeleteMapping("/{patientId}")
+    public R deleteMedicalRecords(@PathVariable Integer patientId) {
+        medicalRecordService.delete(patientId);
         return R.ok().msg("删除成功");
     }
 }
