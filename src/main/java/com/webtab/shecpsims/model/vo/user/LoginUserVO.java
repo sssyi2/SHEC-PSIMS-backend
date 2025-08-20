@@ -2,11 +2,13 @@ package com.webtab.shecpsims.model.vo.user;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class LoginUserVO {
+public class LoginUserVO  implements Serializable {
     private int userID; // 用户ID
 
-    private String username; // 用户名
+    private String userName; // 用户名
 
     private String password; // 密码
 

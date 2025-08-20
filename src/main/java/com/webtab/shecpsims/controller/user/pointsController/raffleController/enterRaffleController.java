@@ -61,8 +61,8 @@ public class enterRaffleController {
        return R.error(555).msg("抽奖出现错误");
 
     }
-    @PostMapping("/setAddress/{id}")
-    public R setAdd(@PathVariable("id") int UserID, @RequestParam String address,@RequestParam(required = false)String phoneNumber){
+    @PostMapping("/setAddress/{id}")//更新用户的手机号和地址
+    public R setAdd(@PathVariable("id") int UserID, @RequestParam String address,@RequestParam String phoneNumber){
      if(address==null || address.isEmpty()){
     return R.error(550).msg("地址不能为空");
         }
@@ -70,17 +70,16 @@ public class enterRaffleController {
         if(user == null){
             return R.error(506).msg("用户不存在");
         }//用户存在的情况下判断是否填入了手机号
-     if(phoneNumber==null || phoneNumber.isEmpty()){//不填入手机号
-         System.out.println("未填入手机号");
-         user.setAddress(address);
-         boolean b = userService.updateById(user);
-         return b?R.ok().data(user):R.error(549).msg("设置收货地址失败");
-     }else{
-         System.out.println("已输入手机号");
+     if(phoneNumber==null || phoneNumber.isEmpty()){
+//         System.out.println("未填入手机号");
+         return R.error(549).msg("手机号不能为空");
+     }
+
+         System.out.println("已输入手机号和地址");
          user.setAddress(address);
          user.setPhoneNumber(phoneNumber);
          boolean b = userService.updateById(user);
          return b?R.ok().data(user):R.error(549).msg("设置收货地址与手机号码失败");
-     }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.webtab.shecpsims.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.webtab.shecpsims.model.entity.user.Raffle;
@@ -30,26 +31,28 @@ public class RaffleServiceImpl extends ServiceImpl<RaffleMapper, Raffle>
     }
 
     @Override//当对一个奖品进行修改时，应当设置其他奖品的花费积分与修改后的一致
-    public boolean updateRaffle(int raffleId,Raffle raffle) {
-        int roundId = raffle.getRoundId();
-        QueryWrapper<Raffle> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("roundId", roundId);
-        List<Raffle> raffles = raffleMapper.selectList(queryWrapper);
-        for(Raffle raffle1 : raffles){
-            raffle1.setSpendPoints(raffle.getSpendPoints());
-            boolean b = updateById(raffle1);
-            if(!b){
+    public boolean updateRaffle(List<Raffle> raffle) {
+//        int roundId = raffle.getRoundId();
+        for(Raffle r : raffle){
+            r.setRoundId(r.getRoundId());
+            r.setRaffleName(r.getRaffleName());
+            r.setRoundName(r.getRoundName());
+            r.setSpendPoints(r.getSpendPoints());
+            r.setWinningProb(r.getWinningProb());
+            r.setImage(r.getImage());
+            int i = raffleMapper.updateById(r);
+            if(i<0){
                 return false;
             }
         }
-        raffle.setRaffleId(raffleId);
-        return updateById(raffle);
+
+        return true;
     }
 
     @Override
     public boolean deleteRaffle(int roundId) {
         QueryWrapper<Raffle> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("roundId", roundId);
+        queryWrapper.eq("round_id", roundId);
         int i = raffleMapper.delete(queryWrapper);
         return i>0;
     }
@@ -146,9 +149,18 @@ public class RaffleServiceImpl extends ServiceImpl<RaffleMapper, Raffle>
         }
     }
 
-
-
-
+    @Override
+    public int getMax() {
+        LambdaQueryWrapper<Raffle> queryWrapper = new LambdaQueryWrapper<>();
+        List<Raffle> raffles = raffleMapper.selectList(queryWrapper);
+        int max = 0;
+        for(Raffle raffle1 : raffles){
+            if(max< raffle1.getRoundId()){
+                max = raffle1.getRoundId();
+            }
+        }
+        return max;
+    }
 
 
 }

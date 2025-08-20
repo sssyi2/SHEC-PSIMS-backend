@@ -10,6 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -34,7 +38,10 @@ public class GoodsEditController extends HttpServlet {
     public R updateGoods(@PathVariable("goodsId") Integer goodsId,
                          @RequestParam("goodsName") String name,
                          @RequestParam("goodsImage") MultipartFile image,
-                         @RequestParam("points") String points) throws IOException {
+                         @RequestParam("points") String points,
+                         @RequestParam String des,
+                         @RequestParam String status,
+                         @RequestParam int number) throws IOException {
         if (goodsId == null) {
             return R.error(503).msg("商品 ID 不能为空");
         }
@@ -47,6 +54,9 @@ public class GoodsEditController extends HttpServlet {
         goods.setGoodsId(goodsId);
         goods.setGoodsName(name);
         goods.setPoints(Integer.parseInt(points));
+        goods.setNumber(number);
+        goods.setStatus(status);
+        goods.setDes(des);
         if (image!=null||!image.isEmpty()) {
             ImgStr(image, goods);
         }else{
@@ -68,42 +78,45 @@ public class GoodsEditController extends HttpServlet {
         return b ? R.ok().msg("修改成功") : R.error(505).msg("修改失败");
 
     }
-       public void ImgStr(MultipartFile file, Goods goods)throws IOException {
-           //我们简单验证一下file文件是否为空
-           Date date = new Date();
-           //获取当前系统时间年月这里获取到月如果要精确到日修改("yyyy-MM-dd")
-           String dateForm = new SimpleDateFormat("yyyy-MM").format(date);
-           //地址合并 path.getFileimg 是存放在实体类的路径 不会写得同学可以直接写 "D:\\img" 这文件要手动创建
-           String casePath = "C:\\image"+dateForm;
-           //获取图片后缀
-           String imgFormat = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-           //这里我们加入了验证图片类型 这需要自己手动写 声明点这只是非常简单的验证
-           //删除不影响程序运行
-           /***************************************************/
-           ImgRegulation regulation = new ImgRegulation();
-           try{ boolean ifimg = regulation.VERIFY(imgFormat);
-               if (false==ifimg){ return; }
-           }catch (Exception e){ return; }
-           /****************************************************/
-           //判断文件是否存在
-           /*************************************************/
-           File f = new File(casePath);
-           try {if (!f.exists()){f.mkdirs();}
-           }catch (Exception e){ return; }
-           /*************************************************/
-           //给图片重新随机生成名字
-           String name= UUID.randomUUID().toString()+imgFormat;
-           //保存图片
-           file.transferTo(new File(casePath+"\\"+name));
-           //拼接要保存在数据中的图片地址
-           //path.getUREIMG() 同样也是存放在实体类的字段 可以直接写 http://localhost:8080/
-           //dateForm 这是动态的文件夹所以要和地址一起存入数据库中
-           //auser 为@RequestMapping("/auser")
-           String urlImg ="http://localhost:8080/"+"admin/goods/static?fileUrl="+dateForm+"/"+name;
-           //放入对应的字段中
-           goods.setGoodsImage(urlImg);
+    public void ImgStr(MultipartFile file, Goods goods) throws IOException {
+        //我们简单验证一下file文件是否为空
+        if (file == null || file.isEmpty()) {
+            return;
+        }
+        final String UPLOAD_DIR = "src/main/resources/static/images/"; // 默认在项目根目录下
+        try {
+            // 2. 检查文件类型（仅允许图片）
+            String contentType = file.getContentType();
+            if (!contentType.startsWith("image/")) {
+                return;
+            }
 
-       }
+            // 3. 生成唯一文件名（防止重名冲突）
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFilename = System.currentTimeMillis() + fileExtension;
+
+            // 4. 创建上传目录（如果不存在）
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // 5. 保存文件到本地
+            Path filePath = uploadPath.resolve(newFilename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // 6. 返回文件访问URL（需替换为你的实际域名或存储服务）
+            String fileUrl = "/images/" + newFilename;
+
+            //放入对应的字段中
+            goods.setGoodsImage(fileUrl);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     }
 

@@ -18,12 +18,12 @@ spring:
       enabled: true
       max-file-size: 20MB # 设置最大文件大小，例如 10MB
       max-request-size: 20MB # 设置最大请求大小，例如 10MB
-      location: uploads/ # 设置上传文件的存储目录
-  mvc:
-    static-path-pattern: /admin/goods/static/**
-  web:
-    resources:
-      static-locations: file:C:/image/
+#      location: /upload/ # 设置上传文件的存储目录
+#  mvc:
+#    static-path-pattern: /admin/goods/static/**
+#  web:
+#    resources:
+#      static-locations: file:C:/image/
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
@@ -39,3 +39,9 @@ logging:
   level:
     root: info
     com.webtab.shecpsims: debug
+server:
+  tomcat:
+    apr-enabled: false
+  max-http-request-header-size: 8192
+upload:
+  dir: ./src/main/resources/static/upload

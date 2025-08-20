@@ -3,6 +3,8 @@ package com.webtab.shecpsims.service.user;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.webtab.shecpsims.model.entity.user.Goods;
 
+import java.util.List;
+
 public interface GoodsService extends IService<Goods> {
     public boolean addGoods(Goods goods);
 
@@ -12,4 +14,6 @@ public interface GoodsService extends IService<Goods> {
    public Goods getGoodsById(Integer goodsId);
 
    public boolean exchangeGoods(int goodsPoints, int points);
+   List<Goods> getGoodsByName(String goodsName);
+   List<Goods> listGoods();
 }

@@ -6,9 +6,7 @@ import com.webtab.shecpsims.model.entity.user.Goods;
 import com.webtab.shecpsims.model.entity.user.R;
 import com.webtab.shecpsims.service.user.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +26,27 @@ public class GoodsListController extends HttpServlet {
     public R listGoods() {
         List<Goods> list = goodsService.list();
         return R.ok().data(list);
+    }
+    @GetMapping("/select/goods")
+    public R selectGoodsByName(@RequestParam String goodsName) {
+        List<Goods> goodsByName = goodsService.getGoodsByName(goodsName);
+        return R.ok().data(goodsByName);
+    }
+    @PostMapping("/updateStatus")
+    public R updateStatus(@RequestParam int goodsId, @RequestParam String status) {
+        if(goodsId==0){
+            return R.error(524).msg("商品ID不能为零");
+        }
+        Goods goodsById = goodsService.getGoodsById(goodsId);
+        if(goodsById==null){
+            return R.error(525).msg("商品不存在");
+        }
+        if(status==null||status.isEmpty()){
+            return R.error(526).msg("商品状态不正确");
+        }
+        goodsById.setStatus(status);
+        boolean b = goodsService.updateById(goodsById);
+        return b?R.ok():R.error(527).msg("更新状态失败");
     }
 
 }

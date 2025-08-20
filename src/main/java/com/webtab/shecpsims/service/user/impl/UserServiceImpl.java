@@ -57,8 +57,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 2.查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        queryWrapper.eq("password", password);
+        queryWrapper.eq("user_name", username);
+        queryWrapper.eq("password_hash", password);
         User user = this.baseMapper.selectOne(queryWrapper);
         // 用户不存在
         if (user == null) {

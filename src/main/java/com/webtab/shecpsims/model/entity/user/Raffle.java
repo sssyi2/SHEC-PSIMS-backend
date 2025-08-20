@@ -13,6 +13,33 @@ public class Raffle {
     private int roundId;
     //增加一个中奖概率
     private double winningProb;
+    private String image;
+   private String roundName;
+   private int isNeedAddress;
+
+    public int getIsNeedAddress() {
+        return isNeedAddress;
+    }
+
+    public void setIsNeedAddress(int isNeedAddress) {
+        this.isNeedAddress = isNeedAddress;
+    }
+
+    public String getRoundName() {
+        return roundName;
+    }
+
+    public void setRoundName(String roundName) {
+        this.roundName = roundName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getRaffleName() {
         return raffleName;
@@ -52,5 +79,19 @@ public class Raffle {
 
     public void setWinningProb(double winningProb) {
         this.winningProb = winningProb;
+    }
+
+    @Override
+    public String toString() {
+        return "Raffle{" +
+                "image='" + image + '\'' +
+                ", raffleId=" + raffleId +
+                ", raffleName='" + raffleName + '\'' +
+                ", spendPoints=" + spendPoints +
+                ", roundId=" + roundId +
+                ", winningProb=" + winningProb +
+                ", roundName='" + roundName + '\'' +
+                ", isNeedAddress=" + isNeedAddress +
+                '}';
     }
 }

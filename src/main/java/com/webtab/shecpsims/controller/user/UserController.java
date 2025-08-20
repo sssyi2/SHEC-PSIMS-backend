@@ -1,5 +1,6 @@
 package com.webtab.shecpsims.controller.user;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.webtab.shecpsims.model.entity.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +42,14 @@ public class UserController{
         if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String username = userLoginRequest.getUsername();
+        String username = userLoginRequest.getUserName();
         String password = userLoginRequest.getPassword();
+        System.out.println(username+","+password);
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName, username);
+        User user = userService.getOne(queryWrapper);
+        String passwordHash = user.getPasswordHash();
+        System.out.println(passwordHash);
         if (StringUtils.isAnyBlank(username, password)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

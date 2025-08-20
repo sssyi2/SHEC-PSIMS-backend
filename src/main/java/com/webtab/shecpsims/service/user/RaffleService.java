@@ -8,7 +8,7 @@ import java.util.List;
 public interface RaffleService extends IService<Raffle> {
     boolean addRaffle(Raffle raffle);
 
-    boolean updateRaffle(int raffleId,Raffle raffle);
+    boolean updateRaffle(List<Raffle> raffle);
 
     boolean  deleteRaffle(int roundId);
 
@@ -21,4 +21,5 @@ public interface RaffleService extends IService<Raffle> {
     Raffle getPrizeById(int prizeId);
 
     boolean get(int UserID,Raffle prize);
+    int getMax();
 }

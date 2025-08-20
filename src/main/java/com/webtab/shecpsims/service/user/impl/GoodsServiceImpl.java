@@ -1,5 +1,6 @@
 package com.webtab.shecpsims.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.webtab.shecpsims.model.entity.user.Goods;
@@ -11,6 +12,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods>
         implements GoodsService {
@@ -18,7 +21,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods>
  @Autowired
  private RedisTemplate redisTemplate;
 
-
+@Autowired
+private GoodsMapper goodsMapper;
  @Override
  public boolean addGoods(Goods goods) {
 
@@ -55,6 +59,23 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods>
 
    return true;
   }
+ }
+
+ @Override
+ public List<Goods> getGoodsByName(String goodsName) {
+  LambdaQueryWrapper<Goods> query=new LambdaQueryWrapper<>();
+  query.likeRight(Goods::getGoodsName, goodsName); // 右匹配（如'abc%'）
+  List<Goods> goods = goodsMapper.selectList(query);
+  return goods;
+ }
+
+ @Override
+ public List<Goods> listGoods() {
+  LambdaQueryWrapper<Goods> goods=new LambdaQueryWrapper<>();
+  goods.eq(Goods::getStatus,"已上架");
+  goods.ge(Goods::getNumber,1);//展示库存大于等于一的商品
+  List<Goods> goods1 = goodsMapper.selectList(goods);
+  return goods1;
  }
 
 
